@@ -4,15 +4,16 @@ import UIKit
 
 class TableViewController:UIViewController {
     
+    let habit: Habit
+    
     private var tableView: UITableView  = {
         let table = UITableView.init(
             frame: .zero,
             style: .plain)
         table.translatesAutoresizingMaskIntoConstraints = false
-        table.backgroundColor = .green
+        table.backgroundColor = UIColor(named: "gray")
         return table
     }()
-    
     
     private func tableViewCell() {
         tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.idTable)
@@ -31,6 +32,17 @@ class TableViewController:UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
+    
+    //MARK: - life cycle
+
+    init(_ habit: Habit) {
+        self.habit = habit
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +50,25 @@ class TableViewController:UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
         table()
         tableViewCell()
+        let buttonEdit = UIBarButtonItem(title: "Править", style: .plain, target: self, action: #selector(buttonEdit))
+        buttonEdit.tintColor = UIColor(named: "сolorPink")
+        navigationItem.rightBarButtonItem = buttonEdit
+        let buttonBack = UIBarButtonItem(title: "Отменть", style: .plain, target: self, action: #selector(buttonBack))
+        buttonBack.tintColor = UIColor(named: "сolorPink")
+        navigationItem.leftBarButtonItem = buttonBack
     }
+    
+    @objc private func buttonEdit(){
+        let habitViewController = UINavigationController(rootViewController: HabitViewController(habit: habit))
+        habitViewController.modalTransitionStyle = .coverVertical
+        habitViewController.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(HabitViewController(habit: habit), animated: true)
+    }
+    
+    @objc private func buttonBack(){
+        navigationController?.popViewController(animated: true)
+    }
+    
     
 }
 
@@ -60,6 +90,11 @@ extension TableViewController: UITableViewDelegate , UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
        return 1
    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
-    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+         "Активность"
+     }
 }
