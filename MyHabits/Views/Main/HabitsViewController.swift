@@ -17,10 +17,8 @@ final class HabitsViewController: UIViewController {
     }
     
     var habitCell =  HabitCollectionViewCell()
-    var indexCell:Set<IndexPath> = Set()
-
     
-     lazy var collectionView: UICollectionView = {
+     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 10
@@ -36,9 +34,6 @@ final class HabitsViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = UIColor(named: "view")
         collectionView.clipsToBounds = true
-//        collectionView.register(ProgressCollectionViewCell.self,
-//                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-//                                withReuseIdentifier: ProgressCollectionViewCell.idHeader)
         return collectionView
     }()
             
@@ -47,7 +42,7 @@ final class HabitsViewController: UIViewController {
         collectionView.dataSource = self
     }
     
-     func collectionViewLayOut(){
+    private func collectionViewLayOut(){
         view.addSubview(collectionView)
          NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -60,11 +55,6 @@ final class HabitsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-  //      collectionViewLayOut()
-  //      setupCollectionView()
-       
-        
         let button = UIBarButtonItem(image: imagePlus , style: .plain,target: self, action:#selector(buttonAdd))
         button.tintColor = UIColor(named: "сolorPink")
         navigationItem.rightBarButtonItem = button
@@ -78,14 +68,7 @@ final class HabitsViewController: UIViewController {
         navigationItem.title = "Сегодня"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
-        
     }
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        collectionViewLayOut()
-//        setupCollectionView()
-//    }
     
     @objc private func buttonAdd(){
         let habitVС = HabitViewController(habit:nil)
@@ -102,8 +85,6 @@ final class HabitsViewController: UIViewController {
 
 extension HabitsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
      
-    
-    
     func numberOfSections(in tableView: UICollectionView) -> Int {
        return 2
    }
@@ -131,6 +112,7 @@ extension HabitsViewController: UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
 }
+
 extension HabitsViewController:UICollectionViewDelegateFlowLayout {
     
     private func itemWidth(for width: CGFloat, spacing: CGFloat) -> CGFloat {
@@ -213,22 +195,5 @@ extension HabitsViewController:UICollectionViewDelegateFlowLayout {
             navigationController?.pushViewController(tableVC, animated: true)
         }
     }
-        
 }
-    
 
-//extension HabitsViewController:StoryCheckMarkDelegate {
-//    func cellButtonTapped(cell: HabitCollectionViewCell) {
-//        habitCell.imageCheckButton.setImage(habitCell.imageCheckMark, for: .normal)
-//        guard habit.isAlreadyTakenToday == true else {return HabitsStore.shared.track(habit)}
-//        habitCell.imageCheckButton.setImage(habitCell.imageCheckMark, for: .normal) }
-//        print(habit.isAlreadyTakenToday)
-//        print(habit.trackDates)
-//                if habit.isAlreadyTakenToday == false {
-//                    HabitsStore.shared.track(habit)
-//                    habitCell.imageCheckButton.setImage(habitCell.imageCheckMark, for: .normal)
-//                    //collectionRelod.reloadData()
-//                    print(habit.isAlreadyTakenToday)
-//                    print(habit.trackDates)
-//                }
-//}

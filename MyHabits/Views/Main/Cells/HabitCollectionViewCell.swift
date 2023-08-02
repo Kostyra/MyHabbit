@@ -11,8 +11,8 @@ final class HabitCollectionViewCell: UICollectionViewCell {
     
     static let idCVC = "HabitCollectionViewCell"
     
-    let imageCheckMark = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 38))
-    let imageNotCheckMark = UIImage(systemName: "circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 38))
+    private let imageCheckMark = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 38))
+    private let imageNotCheckMark = UIImage(systemName: "circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 38))
     
      var buttonActive = false
     
@@ -23,14 +23,14 @@ final class HabitCollectionViewCell: UICollectionViewCell {
         return text
     }()
     
-    private lazy var textEveryDay: UILabel = {
+    private lazy var textEveryDayLabel: UILabel = {
         let text = UILabel()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.font = UIFont.systemFont(ofSize: 12)
         return text
     }()
     
-    private lazy var textCount: UILabel = {
+    private lazy var textCountLabel: UILabel = {
         let text = UILabel()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.font = UIFont.systemFont(ofSize: 13)
@@ -48,8 +48,8 @@ final class HabitCollectionViewCell: UICollectionViewCell {
     
     private func setupCVC() {
         contentView.addSubview(textLabel)
-        contentView.addSubview(textEveryDay)
-        contentView.addSubview(textCount)
+        contentView.addSubview(textEveryDayLabel)
+        contentView.addSubview(textCountLabel)
         contentView.addSubview(imageCheckButton)
         
         NSLayoutConstraint.activate([
@@ -58,23 +58,20 @@ final class HabitCollectionViewCell: UICollectionViewCell {
             textLabel.heightAnchor.constraint(equalToConstant: 20),
             textLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
-            textEveryDay.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 4),
-            textEveryDay.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            textEveryDay.widthAnchor.constraint(equalToConstant: 200),
-            textEveryDay.heightAnchor.constraint(equalToConstant: 12),
+            textEveryDayLabel.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 4),
+            textEveryDayLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            textEveryDayLabel.widthAnchor.constraint(equalToConstant: 200),
+            textEveryDayLabel.heightAnchor.constraint(equalToConstant: 12),
             
-            textCount.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-            textCount.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            textCount.widthAnchor.constraint(equalToConstant: 100),
-            textCount.heightAnchor.constraint(equalToConstant: 12),
+            textCountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            textCountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            textCountLabel.widthAnchor.constraint(equalToConstant: 100),
+            textCountLabel.heightAnchor.constraint(equalToConstant: 12),
             
             imageCheckButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             imageCheckButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -25),
             imageCheckButton.heightAnchor.constraint(equalToConstant: 38),
             imageCheckButton.widthAnchor.constraint(equalToConstant: 38),
-            
-            
-            
         ])
     }
 
@@ -85,20 +82,17 @@ final class HabitCollectionViewCell: UICollectionViewCell {
         textLabel.text = habit.name
         textLabel.textColor = habit.color
         
-        textEveryDay.text = "Каждый день в " + date.string(from: (habit.date))
-        textEveryDay.textColor = .systemGray2
+        textEveryDayLabel.text = "Каждый день в " + date.string(from: (habit.date))
+        textEveryDayLabel.textColor = .systemGray2
         
-        textCount.text = "Счетчик: " + String(habit.trackDates.count)
-        textCount.textColor = .systemGray
+        textCountLabel.text = "Счетчик: " + String(habit.trackDates.count)
+        textCountLabel.textColor = .systemGray
          
         imageCheckButton.tintColor = habit.color
         if habit.isAlreadyTakenToday == true {
              imageCheckButton.setImage(imageCheckMark, for: .normal)
-            
-//            imageCheckButton.isUserInteractionEnabled = false
          } else {
              imageCheckButton.setImage(imageNotCheckMark, for: .normal)
-//             imageCheckButton.isUserInteractionEnabled = true
          }  
     }
     
@@ -111,11 +105,6 @@ final class HabitCollectionViewCell: UICollectionViewCell {
         setupCVC()
         contentView.layer.cornerRadius = 10
     }
-
-        var timePicler = Date()
-        var nameText = String()
-        var colorPicler = UIColor()
-        var trackCheckDates = [Date]()
 
     @objc  func buttonPressChangeColor () {
         guard let habit = habit else {return}

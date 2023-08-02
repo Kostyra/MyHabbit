@@ -201,15 +201,15 @@ final class HabitViewController: UIViewController, UIColorPickerViewControllerDe
     
     @objc private func buttonSave(){
         if let currentHabit = habit {
-            currentHabit.name = newHabitStore.nameText
-            currentHabit.date = newHabitStore.timePicler
-            currentHabit.color = newHabitStore.colorPicler
+            currentHabit.name = textField.text ?? ""
+            currentHabit.date = datePicler.date
+            currentHabit.color = buttonCircle.tintColor
             HabitsStore.shared.save()
         } else {
             let newHabit = Habit(
-                name: newHabitStore.nameText,
-                date: newHabitStore.timePicler,
-                color: newHabitStore.colorPicler)
+                name: textField.text ?? "",
+                date: datePicler.date,
+                color: buttonCircle.tintColor)
             if HabitsStore.shared.habits.contains(newHabit) == false {
                 HabitsStore.shared.habits.append(newHabit)
                 dismiss(animated: true)
@@ -225,9 +225,8 @@ final class HabitViewController: UIViewController, UIColorPickerViewControllerDe
     }
     
     @objc private func changePicler(paramPicler: UIDatePicker)  {
-        newHabitStore.timePicler = paramPicler.date
         if paramPicler.isEqual(self.datePicler) {
-            print(newHabitStore.timePicler)
+            print(paramPicler.date)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "hh:mm a"
             dateFormatter.string(from: datePicler.date)
@@ -236,8 +235,8 @@ final class HabitViewController: UIViewController, UIColorPickerViewControllerDe
     }
     
     @objc private func statusTextChanged(_ textField: UITextField) {
-        newHabitStore.nameText = textField.text ?? ""
-        print(textField.text ?? "")
+        let textPrint = textField.text ?? ""
+        print(textPrint)
     }
     
     @objc private func removeHabit() {
@@ -257,16 +256,11 @@ final class HabitViewController: UIViewController, UIColorPickerViewControllerDe
         present(alert, animated: true)
     }
 
- /// НЕ понял зачем нужна(
-//    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
-//        let color = viewController.selectedColor
-//    }
-    
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
         let color = viewController.selectedColor
         buttonCircle.tintColor = color
-        newHabitStore.colorPicler = color
-        print(newHabitStore.colorPicler)
+        let colorPrint = color
+        print(colorPrint)
         
     }
     

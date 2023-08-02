@@ -16,7 +16,7 @@ class TableViewController:UIViewController {
     }()
     
     private func tableViewCell() {
-        tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.idTable)
+        tableView.register(HabitCheckTableViewCell.self, forCellReuseIdentifier: HabitCheckTableViewCell.idTableHabitCheck)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = UITableView.automaticDimension
@@ -79,10 +79,13 @@ extension TableViewController: UITableViewDelegate , UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.idTable, for: indexPath)
-                as? TableViewCell else { return UITableViewCell() }
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: HabitCheckTableViewCell.idTableHabitCheck, for: indexPath)
+                as? HabitCheckTableViewCell else { return UITableViewCell() }
+
         let arrayNew = HabitsStore.shared.dates[indexPath.row]
+        let isTracked = HabitsStore.shared.habit(habit, isTrackedIn: arrayNew)
+        cell.accessoryType = isTracked ? .checkmark : .none
+        cell.tintColor =  UIColor(named: "сolorPink")
         cell.timeHabit(index: indexPath.row, check: HabitsStore.shared.habit(habit, isTrackedIn: arrayNew))
         return cell
     }
